@@ -1,0 +1,54 @@
+{
+  "name": "20230306",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "server": "node ./dist-server/bin/www",
+    "transpile": "npx babel ./server --out-dir dist-server",
+    "clean": "npx rimraf dist-server",
+    "build": "npm-run-all clean transpile",
+    "dev": "npm-run-all build server",
+    "watch:dev": "npx nodemon",
+    "test": "jest"
+  },
+  "dependencies": {
+    "@babel/cli": "^7.21.0",
+    "@babel/core": "^7.21.0",
+    "@babel/preset-env": "^7.20.2",
+    "cookie-parser": "~1.4.4",
+    "debug": "~2.6.9",
+    "ejs": "~2.6.1",
+    "express": "~4.16.1",
+    "http-errors": "~1.6.3",
+    "jest": "^29.5.0",
+    "morgan": "~1.9.1",
+    "node-json-db": "^2.1.4",
+    "nodemon": "^2.0.21",
+    "npm-run-all": "^4.1.5",
+    "rimraf": "^4.3.1",
+    "uuid": "^9.0.0"
+  },
+  "babel": {
+    "presets": [
+      "@babel/preset-env"
+    ],
+    "ignore": [
+      "services/lowdb"
+    ]
+  },
+  "nodemonConfig": {
+    "exec": "npm run dev",
+    "watch": [
+      "server/*",
+      "public/*"
+    ],
+    "ignore": [
+      "**/__tests__/**",
+      "*.test.js",
+      "*.spec.js"
+    ]
+  },
+  "jest": {
+    "testEnvironment": "node"
+  }
+}
