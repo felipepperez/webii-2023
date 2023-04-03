@@ -1,11 +1,178 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title><%= title %></title>
-    <link rel='stylesheet' href='/stylesheets/style.css' />
-  </head>
-  <body>
-    <h1><%= title %></h1>
-    <p>Welcome to <%= title %></p>
-  </body>
+
+<head>
+  <title>
+    <%= title %>
+  </title>
+  <link rel='stylesheet' href='/stylesheets/style.css' />
+  <script>
+    window.addEventListener('load', () => {
+      const xhttp = new XMLHttpRequest();
+      document.getElementById('formulario').addEventListener('submit', event => {
+        event.preventDefault();
+
+        const type = document.getElementById('btSubmit').dataset.type;
+
+        if (type == 'add') {
+          try {
+            const body = {
+              nome: document.getElementById('nome').value,
+              cpf: document.getElementById('cpf').value,
+              telefone: document.getElementById('telefone').value
+            };
+
+            xhttp.onload = function () {
+              if (this.status !== 200) {
+                alert('Erro na requisição');
+              } else {
+                reset();
+                preencheTabela();
+              }
+            }
+            xhttp.open('POST', '/users/create', true);
+            xhttp.setRequestHeader("Content-type", "application/json;charset=UTF-8")
+            xhttp.send(JSON.stringify(body));
+          } catch (error) {
+
+          }
+
+        } else if (type == 'update') {
+          const body = {
+            id: document.getElementById('btSubmit').dataset.id,
+            nome: document.getElementById('nome').value,
+            cpf: document.getElementById('cpf').value,
+            telefone: document.getElementById('telefone').value
+          };
+
+          xhttp.onload = function () {
+            if (this.status !== 200) {
+              alert('Erro na requisição');
+            } else {
+              reset();
+              preencheTabela();
+            }
+          }
+          xhttp.open('POST', '/users/update', true);
+          xhttp.setRequestHeader("Content-type", "application/json;charset=UTF-8")
+          xhttp.send(JSON.stringify(body));
+        }
+
+
+      });
+
+      preencheTabela();
+
+      function preencheTabela() {
+        const table = document.getElementById('tableUsers');
+        const lines = table.getElementsByTagName('tr');
+        for (i = lines.length - 1; i > 0; i--) {
+          lines[i].remove();
+        }
+
+        xhttp.onload = function () {
+          if (this.status !== 200) {
+            alert('Erro na requisição');
+          } else {
+            const users = JSON.parse(this.responseText);
+            for (user of users) {
+              const row = document.createElement('tr');
+              let td = document.createElement('td');
+              td.append(user.name);
+              row.appendChild(td);
+              td = document.createElement('td');
+              td.append(user.cpf);
+              row.appendChild(td);
+              td = document.createElement('td');
+              td.append(user.phone);
+              row.appendChild(td);
+              td = document.createElement('td');
+              td.append('Editar');
+              td.classList.add('update');
+              td.dataset.id = user.id;
+              td.addEventListener('click', function () {
+                const row = this.parentNode;
+                const cols = row.getElementsByTagName('td');
+                document.getElementById('btSubmit').setAttribute('value', 'Alterar');
+                document.getElementById('btSubmit').dataset.type = 'update';
+                document.getElementById('btSubmit').dataset.id = this.dataset.id;
+                document.getElementById('nome').value = cols[0].outerText;
+                document.getElementById('cpf').value = cols[1].outerText;
+                document.getElementById('telefone').value = cols[2].outerText;
+              });
+              row.appendChild(td);
+              td = document.createElement('td');
+              td.append('Excluir');
+              td.classList.add('delete');
+              td.dataset.id = user.id;
+              td.addEventListener('click', function () {
+                if (confirm('Deseja mesmo excluir?')) {
+                  const body = {
+                    id: this.dataset.id
+                  };
+                  xhttp.onload = function () {
+                    if (this.status !== 200) {
+                      alert('Erro na requisição');
+                    } else {
+                      preencheTabela();
+                    }
+                  }
+                  xhttp.open('DELETE', '/users/delete', true);
+                  xhttp.setRequestHeader("Content-type", "application/json;charset=UTF-8")
+                  xhttp.send(JSON.stringify(body));
+                }
+              });
+              row.appendChild(td);
+              table.appendChild(row);
+            }
+          }
+        }
+        xhttp.open('GET', '/users', true);
+        xhttp.send();
+      }
+
+      function reset() {
+        delete document.getElementById('btSubmit').dataset.id;
+        document.getElementById('btSubmit').setAttribute('value', 'Adicionar');
+        document.getElementById('btSubmit').dataset.type = 'add';
+
+        document.getElementById('nome').value = '';
+        document.getElementById('cpf').value = '';
+        document.getElementById('telefone').value = '';
+      }
+
+      document.getElementById('btReset').addEventListener('click', reset);
+    });
+  </script>
+</head>
+
+<body>
+  <h1>
+    <%= title %>
+  </h1>
+  <form id="formulario">
+    <label for="nome">Nome:</label>
+    <input type="text" id="nome">
+    <br><br>
+    <label for="cpf">CPF:</label>
+    <input type="text" id="cpf">
+    <br><br>
+    <label for="telefone">Telefone:</label>
+    <input type="text" id="telefone">
+    <br><br>
+    <input type="submit" id="btSubmit" value="Adicionar" data-type="add">
+    <input type="button" id="btReset" value="Resetar">
+  </form>
+  <br><br><br><br>
+  <table id="tableUsers">
+    <tr>
+      <th>Nome</th>
+      <th>CPF</th>
+      <th>Telefone</th>
+      <th></th>
+      <th></th>
+    </tr>
+  </table>
+</body>
+
 </html>

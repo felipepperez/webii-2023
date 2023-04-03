@@ -1,0 +1,150 @@
+{
+	"info": {
+		"_postman_id": "10d2321e-9f9e-44e6-a61d-39ecb3e4c917",
+		"name": "BDExpress",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Get User",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/users/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"users",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete User",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "id",
+							"value": "3efdd992-f2b9-4a52-9787-aea64e2820bd",
+							"type": "default"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:3000/users/delete",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"users",
+						"delete"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create User",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "nome",
+							"value": "Felipe",
+							"type": "default"
+						},
+						{
+							"key": "cpf",
+							"value": "000.000.000-00",
+							"type": "default"
+						},
+						{
+							"key": "telefone",
+							"value": "(67) 9 9999.9999",
+							"type": "default"
+						},
+						{
+							"key": "teste",
+							"value": "fdfdfd",
+							"type": "default",
+							"disabled": true
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:3000/users/create",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"users",
+						"create"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update User",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "id",
+							"value": "4562f4fb-035f-48d0-a654-eec2dd535c70",
+							"type": "default"
+						},
+						{
+							"key": "nome",
+							"value": "Felipe Pereira Perez",
+							"type": "default"
+						},
+						{
+							"key": "cpf",
+							"value": "111.000.000-00",
+							"type": "default"
+						},
+						{
+							"key": "telefone",
+							"value": "(67) 9 9889.9999",
+							"type": "default"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:3000/users/update",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"users",
+						"update"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
