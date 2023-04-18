@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Comidas</title>
+  <link rel='stylesheet' href='/stylesheets/style.css' />
+  <!-- Compiled and minified CSS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+
+  <!-- Compiled and minified JavaScript -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+</head>
+
+<body>
+  <div class="container">
+    <div class="row">
+      <div class="input-field col s12">
+        <select>
+          <option value="" disabled selected>Choose your option</option>
+          <% json.categories.forEach(function(comida){ %>
+            <option value="<%= comida.idCategory %>">
+              <%= comida.strCategory %>
+            </option>
+            <% }) %>
+        </select>
+        <label>Selecione uma categoria</label>
+      </div>
+    </div>
+  </div>
+  <div id="result">
+
+  </div>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      var elems = document.querySelectorAll('select');
+      var instances = M.FormSelect.init(elems, '');
+
+      elems[0].addEventListener('change', function () {
+        const value = this.value;
+        const xhttp = new XMLHttpRequest();
+
+        xhttp.onload = function () {
+          if (this.status !== 200) {
+            alert('Erro na requisição');
+          } else {
+            let html = document.createElement('html');
+            html.innerHTML = this.responseText;
+            
+            document.getElementById('result').innerHTML = html.querySelector('body').innerHTML;
+            //ToDo
+          }
+        };
+
+        xhttp.open('GET', 'comidas/'+value, true);
+        xhttp.send();
+      });
+    });
+  </script>
+</body>
+
+</html>
